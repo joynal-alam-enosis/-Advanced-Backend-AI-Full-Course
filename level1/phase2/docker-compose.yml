@@ -1,0 +1,28 @@
+services: #sevices first
+  backend: #containerName - service
+    #image: # if we want to run the container by an image form docker hub
+
+    #if we want to run the container using the image crated from our docker file -> use build
+
+    build: ./backend #Dockerfile path
+    env_file:
+      - ./backend/.env
+    # environment:
+    #   - PORT=7000
+    ports:
+      - "8000:7000" #localmechinePort:containerPort
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev -- --host 0.0.0.0
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
